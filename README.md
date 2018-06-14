@@ -1,17 +1,25 @@
 # CRUD & REST Test/Practice
 
 # Available endpoints for posts: 
-# */api/notes [POST] notes.store header json
-# */api/notes  [Get] notes.index
-# */api/notes?user={id}  [Get] notes.index
+
+ */api/notes [POST] notes.store header json
+ 
+ */api/notes  [Get] notes.index
+ 
+ */api/notes?user={id}  [Get] notes.index
 
 # Available user Commands:
-#  user:create         expected user:create {name}
-#  user:destroy        expected user:destroy {id}
-#  user:read           expected user:read !!Optional user:read {id?} to retrieve specific user!!
-#  user:update         expected user:update {id} {name}
-# Available UnitTests:
-# * ToCheck JSON string compability.
+
+  user:create         expected user:create {name}
+  
+  user:destroy        expected user:destroy {id}
+  
+  user:read           expected user:read !!Optional user:read {id?} to retrieve specific user!!
+  
+  user:update         expected user:update {id} {name}
+  
+#  Available UnitTests:
+ ToCheck JSON string compability.
   
 # Sampe JSON for testing: 
 {
