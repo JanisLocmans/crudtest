@@ -18,6 +18,7 @@ Route::get('/', function () {
 //all note routes
 Route::group(['prefix' => 'api'], function() {
     Route::resource('notes', 'PostController');
+    Route::resource('users', 'UserController');
 });
 
 

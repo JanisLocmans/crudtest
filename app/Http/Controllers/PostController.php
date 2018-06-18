@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
 use App\User;
 use App\Post;
+use App\Http\Controllers\Crud;
 
 class PostController extends Controller
 {
@@ -22,15 +23,7 @@ class PostController extends Controller
         if($request->input('user')){//Checks if theres any input 
 
             $data = Post::where('user_id', $request->input('user'))->get();  
-
-            if(count($data) !== 0) { //Check if there's a result.
-                foreach( $data as $item ) {
-                    $result[] = ' | post id | ' . $item->id . ' | user id | ' . $item->user->id . ' | user name | ' . $item->user->name . ' | post title | ' . $item->title . ' | post content | ' . $item->content . '<br>' ;
-                }
-                return $result;
-            } else { //Found nothing
-                return 'User does not exist or posts doesnt exist'; 
-            }
+            return $data;
         } else {      //Dumps all posts and info about them
             $data = Post::get();
             foreach( $data as $item ) {
