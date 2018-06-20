@@ -2,77 +2,60 @@
  
 namespace App\Libraries;
 use App\User;
- 
+
 class CRUDUserClass {
 
-    public function create($JSONArray){
+    private $user;
 
-        $data = $JSONArray;
+    function __construct(User $user) {
+        $this->user = $user;
+    }
 
-        foreach($data as $item){
+    public function create($data){
+        $newUser = $this->user->newInstance(); 
 
-            $newUser = new User();
-            $newUser->name = $item['name'];
-            $newUser->lastname = $item['lastname'];
-            $newUser->save();
-        }
-        return $newUser->toJson();
+        $newUser->name = $data['name'];
+        $newUser->lastname = $data['lastname'];
+        $newUser->save();
+
+        return $newUser;
     }
 
     public function read($id = null){
 
         if($id == null) {
 
-            $result = User::get();
+            $result = $this->user->get();
             
         } else {
 
-            $result = User::find($id);
+            $result = $this->user->find($id);
 
         }
         return $result;
     }
 
 
-    public function update($id, $JSONstring){
-
-            $data = $JSONstring;
-            $user = User::find($id);
-
-            if($user){//exit - 1 : User found Updates user 
-                $changed = false;
-
-                if($user->name != $data[0]['name']) {
-                    $user->name = $data[0]['name'];
-                    $changed = true;
-                }
-
-                if($user->lastname != $data[0]['lastname']) {
-                    $user->lastname = $data[0]['lastname'];
-                    $changed = true;
-                }
-
-                if($changed == true) {
-                    $user->save();
-                }                
-
-                return $user; 
-
-            } else { //exit - 2 : User not Found           
-                return 'User not Found';
-            }
+    public function update($id, $data){
         
+        $user = $this->user->findOrFail($id);
+
+        $user->name = $data['name']; 
+        $user->lastname = $data['lastname']; 
+
+        if($user->isDirty()){
+            $user->save();
+        }
+
+        return $user; 
+
     }
 
     public function destroy($id){
+        $user = $this->user->findOrFail($id);
+            return  $user->delete($id);
 
-        $user = User::find($id);            
-            if($user) { //exit - 1 : User Found  
-                User::destroy($id); 
-                return 'User deleted';
-            }  else { //exit - 2 : User not Found  
-                return 'User not Found';              
-            }
 
     }
+
 }

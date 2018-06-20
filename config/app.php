@@ -146,7 +146,9 @@ return [
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        
 
         /*
          * Application Service Providers...
@@ -155,6 +157,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        
 
     ],
 
@@ -170,7 +173,8 @@ return [
     */
 
     'aliases' => [
-
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,

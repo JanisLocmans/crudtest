@@ -3,44 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 
 use App\Http\Requests;
+use App\Http\Requests\StoreUpdatePost;
 use App\User;
 use App\Post;
-use App\Http\Controllers\Crud;
+use App\Libraries\CRUDPostClass;
 
 class PostController extends Controller
 {
+    protected $crudPostClass;
+
+    /**
+     * Controller constructor
+    */
+    function __construct(CRUDPostClass $crudPostClass){
+        $this->crudPostClass = $crudPostClass;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $result = array();
-        if($request->input('user')){//Checks if theres any input 
-
-            $data = Post::where('user_id', $request->input('user'))->get();  
-            return $data;
-        } else {      //Dumps all posts and info about them
-            $data = Post::get();
-            foreach( $data as $item ) {
-                $result[] = ' | post id | ' . $item->id . ' | user id | ' . $item->user->id . ' | user name | ' . $item->user->name . ' | post title | ' . $item->title . ' | post content | ' . $item->content . '<br>' ;
-            }
-            return $result;
-        }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->crudPostClass->read(); 
     }
 
     /**
@@ -49,32 +37,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUpdatePost $request) // TODO: Validate
     {
-        $data = $request->json()->get('posts');
-
-        if(!empty($data)){
-            foreach($data as $item){
-                $user_exist = User::where('id', $item['user_id'])->first();            
-                if($user_exist != null){ //Check if user is found!
-                    $post = new Post();
-                    $post->user_id = $item['user_id'];
-                    $post->title = $item['title'];
-                    $post->content = $item['content'];
-                    $post->save();
-                } else  { //collect posts where user does not exist!
-                    $error[] = 'This user does not exist: ' . $item['user_id'];
-                }               
-            }
-            if(isset($error)){
-                return $error;
-            } else {
-                return 'All data added !';
-            }          
-        } else { //JSON is not formatted correctly
-            $message = "Invalid Json format !";
-            return $message ;
-        }     
+        return response()->json($this->crudPostClass->create($request->all()));     
     }
 
     /**
@@ -85,18 +50,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->crudPostClass->read($id);
     }
 
     /**
@@ -106,9 +60,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreUpdatePost $request, $id)
     {
-        //
+        return response()->json($this->crudPostClass->update($id, $request->all())); 
     }
 
     /**
@@ -119,6 +73,6 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response()->json($this->crudPostClass->destroy($id)); 
     }
 }
