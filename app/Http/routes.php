@@ -15,10 +15,21 @@ Route::get('/', function () {
     return view('test');
 });
 
-//all note routes
+//all note routesc
 Route::group(['prefix' => 'api'], function() {
     Route::resource('notes', 'PostController');
     Route::resource('users', 'UserController');
+
+    Route::get('/user/verify/{verification_code}', 'AuthController@verifyUser');
+
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+    Route::group(['middleware' => ['jwt.auth']], function() {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('test', function(){
+            return response()->json(['foo'=>'bar']);
+        });
+    });
 });
 
 
