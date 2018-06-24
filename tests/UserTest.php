@@ -25,12 +25,14 @@ class UserTest extends TestCase
 
         $user->shouldReceive('newInstance')->once()->andReturn($user);
         $user->shouldReceive('setAttribute')->with('name', 'Nam1')->once()->andReturn($user);
-        $user->shouldReceive('setAttribute')->with('lastname', 'LastNam2')->once()->andReturn($user);
+        $user->shouldReceive('setAttribute')->with('email', 'something@gmail.com')->once()->andReturn($user);
+        $user->shouldReceive('setAttribute')->with('password','password1')->once()->andReturn($user);
         $user->shouldReceive('save')->once()->andReturn($user);
 
         $data = array(
             'name' => 'Nam1',
-            'lastname' => 'LastNam2'
+            'email' => 'something@gmail.com',
+            'password' => 'password1',
         );
 
         $result = $userCrud->create($data);

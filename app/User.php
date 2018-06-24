@@ -3,6 +3,7 @@
 namespace App;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Hash;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
@@ -18,6 +19,11 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name', 'email', 'password', 'is_verified'
     ];
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+//Events
 use App\Events\RegisterEvent;
-use Illuminate\Http\Request;
-use App\Http\Requests\login;
-use App\Http\Requests\register;
-use App\User;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Mail\Message;
+//Requests
+use App\Http\Requests\Login;
+use App\Http\Requests\Register;
+//Libraries
 use App\Libraries\AuthHandlerClass;
+
+
+//use Illuminate\Http\Request; // Using custom requests
 
 class AuthController extends Controller
 {
@@ -18,12 +18,9 @@ class AuthController extends Controller
     function __construct(AuthHandlerClass $authHandlerClass){
         $this->AuthHandlerClass = $authHandlerClass;
     }
-    public function register(register $request)
+    public function register(Register $request)
     {
-
-        $user = $this->AuthHandlerClass->newuser($request);
-
-        event(new RegisterEvent($user));
+        event(new RegisterEvent($this->AuthHandlerClass->newuser($request)));
 
         return response()->json(['success'=> true, 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
     }
@@ -33,9 +30,9 @@ class AuthController extends Controller
         return $this->AuthHandlerClass->verify($verification_code);
     }
 
-    public function login(login $request)
+    public function requestToken(Login $request)
     {
-        return $this->AuthHandlerClass->login($request->only('email', 'password'));
+        return $this->AuthHandlerClass->requestToken($request->only('email', 'password'));
     }
 
 }

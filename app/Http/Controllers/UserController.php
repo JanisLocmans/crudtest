@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+//use App\Http\Requests;
 
-use App\Http\Requests;
 use App\Http\Requests\StoreUpdateUser;
-use App\User;
 use App\Libraries\CRUDUserClass;
 
 class UserController extends Controller
@@ -38,7 +37,7 @@ class UserController extends Controller
      */
     public function store(StoreUpdateUser $request)
     {
-        return response()->json($this->crudUserClass->create( $request->all()));
+        return response()->json($this->crudUserClass->create( $request->only('name','email','password')));
     }   
 
     /**

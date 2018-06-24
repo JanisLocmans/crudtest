@@ -1,7 +1,7 @@
 <?php
  
 namespace App\Libraries;
-use App\User;
+use Hash, App\User;
 
 class CRUDUserClass {
 
@@ -12,10 +12,13 @@ class CRUDUserClass {
     }
 
     public function create($data){
-        $newUser = $this->user->newInstance(); 
 
+
+        $newUser = $this->user->newInstance();
         $newUser->name = $data['name'];
-        $newUser->lastname = $data['lastname'];
+        $newUser->email = $data['email'];
+        $newUser->password =   $data['password'];
+
         $newUser->save();
 
         return $newUser;

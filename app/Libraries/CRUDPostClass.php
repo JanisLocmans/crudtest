@@ -20,10 +20,12 @@ class CRUDPostClass {
 
         if($this->user->find($data['user_id'])) { // Exit 1
 
-            $newPost = $this->post->newInstance(); //Atšķirība starp New Object() vs newInstance() ?
+            $newPost = $this->post->newInstance();
+
                 $newPost->user_id = $data['user_id'];
                 $newPost->title = $data['title'];
                 $newPost->content = $data['content'];
+
             $newPost->save();
 
             return $newPost;

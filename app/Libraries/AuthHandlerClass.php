@@ -2,12 +2,8 @@
 
 
 namespace App\Libraries;
-use JWTAuth;
+use App\User, App\Verify, Hash, JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-
-use App\User;
-use App\Verify;
-use Validator, DB, Hash, Mail;
 
 
 class AuthHandlerClass
@@ -20,11 +16,9 @@ class AuthHandlerClass
     }
 
     public function newuser($data) {
-    $name = $data['name'];
-    $email = $data['email'];
-    $password = $data['password'];
 
-    return $user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
+    return $user = User::create(['name' => $data['name'], 'email' => $data['email'], 'password' => $data['password']]);
+
     }
 
 
@@ -48,7 +42,7 @@ class AuthHandlerClass
         return response()->json(['success'=> false, 'error'=> "Verification code is invalid."]);
     }
 
-    public function login($data) {
+    public function requestToken($data) {
 
         $data['is_verified'] = 1;
 

@@ -7,8 +7,9 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
 
-class StoreUpdatePost extends FormRequest
+class Register extends FormRequest
 {
+
     public function authorize()
     {
         return true;
@@ -22,9 +23,9 @@ class StoreUpdatePost extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required',
-            'title' => 'required',
-            'content' => 'required'
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|'
         ];
     }
 }

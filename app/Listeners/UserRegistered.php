@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use Validator, DB, Mail;
+use Mail;
 use App\Events\RegisterEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
